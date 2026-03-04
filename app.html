@@ -110,27 +110,39 @@
             letter-spacing: -0.5px;
         }
 
-        .user-profile {
+        /* Profil Menü */
+        .profile-menu {
+            position: relative;
+        }
+
+        .profile-button {
             display: flex;
             align-items: center;
             gap: 12px;
             background: var(--card-bg);
-            padding: 6px 16px 6px 10px;
+            padding: 8px 20px 8px 12px;
             border-radius: 50px;
             border: 1px solid var(--border);
-            transition: 0.2s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
-            position: relative;
+            min-width: 120px;
         }
 
-        .user-profile:hover {
+        .profile-button:hover {
             border-color: var(--neon-green);
             box-shadow: 0 0 15px var(--neon-glow);
         }
 
+        .profile-button.expanded {
+            border-radius: 20px 20px 0 0;
+            background: var(--surface);
+            border-bottom: none;
+            min-width: 250px;
+        }
+
         .avatar {
-            width: 38px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: #1e1e1e;
             display: flex;
@@ -138,11 +150,28 @@
             justify-content: center;
             font-weight: 800;
             color: var(--neon-green);
-            border: 1px solid #333;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .profile-button.expanded .avatar {
+            width: 50px;
+            height: 50px;
+            border-color: var(--neon-green);
+        }
+
+        .user-info {
+            flex: 1;
         }
 
         .user-name {
             font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .user-status-text {
+            font-size: 0.7rem;
+            color: var(--text-muted);
         }
 
         .status-badge {
@@ -153,42 +182,42 @@
             margin-left: 4px;
         }
 
-        /* Account Dropdown */
-        .account-dropdown {
+        .profile-dropdown {
             position: absolute;
-            top: 60px;
+            top: 100%;
             left: 0;
-            width: 280px;
+            width: 100%;
             background: var(--surface);
             border: 1px solid var(--neon-green);
-            border-radius: var(--radius);
+            border-top: none;
+            border-radius: 0 0 20px 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             display: none;
             z-index: 1000;
-            animation: slideDown 0.2s ease-out;
+            overflow: hidden;
         }
 
-        .account-dropdown.show {
+        .profile-dropdown.show {
             display: block;
+            animation: slideDown 0.3s ease-out;
         }
 
-        .dropdown-header {
-            padding: 20px;
+        .dropdown-section {
+            padding: 16px;
             border-bottom: 1px solid var(--border);
         }
 
         .status-selector {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 8px;
         }
 
         .status-option {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
+            gap: 12px;
+            padding: 10px 12px;
             border-radius: var(--radius-md);
             cursor: pointer;
             transition: 0.15s;
@@ -210,13 +239,12 @@
         .status-offline { background: #747f8d; }
 
         .dropdown-item {
-            padding: 12px 20px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
             gap: 12px;
             cursor: pointer;
             transition: 0.15s;
-            border-bottom: 1px solid var(--border);
         }
 
         .dropdown-item:hover {
@@ -265,6 +293,62 @@
             position: relative;
         }
 
+        /* SERVER LIST (neue linke Leiste) */
+        .server-list-sidebar {
+            width: 72px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 0;
+            gap: 12px;
+            overflow-y: auto;
+        }
+
+        .server-icon-large {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--text-muted);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .server-icon-large:hover {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            transform: scale(1.05);
+        }
+
+        .server-icon-large.active-server {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            box-shadow: 0 0 15px var(--neon-glow);
+        }
+
+        .server-icon-large.dm-server {
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .server-icon-large.dm-server::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            width: 30px;
+            height: 2px;
+            background: var(--border);
+        }
+
         /* DM SIDEBAR */
         .dm-sidebar {
             width: var(--sidebar-width);
@@ -274,12 +358,14 @@
             flex-direction: column;
             transition: width 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
             overflow: hidden;
-            position: relative;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
         }
 
         .dm-sidebar.collapsed {
             width: var(--sidebar-collapsed);
+        }
+
+        .dm-sidebar.hidden {
+            display: none;
         }
 
         .sidebar-header {
@@ -379,8 +465,7 @@
         }
 
         .dm-sidebar.collapsed .dm-info,
-        .dm-sidebar.collapsed .sidebar-header h3,
-        .dm-sidebar.collapsed .dm-preview {
+        .dm-sidebar.collapsed .sidebar-header h3 {
             display: none;
         }
 
@@ -393,39 +478,41 @@
             margin: 0 auto;
         }
 
-        /* SERVER PANEL */
-        .server-panel {
-            width: 0;
+        /* SERVER CHANNEL PANEL */
+        .server-channel-panel {
+            width: var(--sidebar-width);
             background: var(--surface);
-            border-left: 1px solid var(--border);
-            transition: width 0.25s ease-out;
-            overflow: hidden;
-            display: flex;
+            border-right: 1px solid var(--border);
+            display: none;
             flex-direction: column;
+            overflow: hidden;
         }
 
-        .server-panel.open {
-            width: 280px;
+        .server-channel-panel.show {
+            display: flex;
         }
 
         .server-header {
             padding: 20px 16px;
             border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .server-name {
             font-weight: 700;
             color: var(--neon-green);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            font-size: 1.1rem;
         }
 
-        .server-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px;
+        .server-status {
+            font-size: 0.75rem;
+            color: var(--text-muted);
         }
 
-        .server-category {
-            margin-bottom: 20px;
+        .channel-category {
+            margin: 16px 0 8px 0;
         }
 
         .category-title {
@@ -433,20 +520,18 @@
             text-transform: uppercase;
             font-size: 0.7rem;
             letter-spacing: 0.5px;
-            margin-bottom: 8px;
-            padding-left: 8px;
+            padding: 0 16px;
+            margin-bottom: 4px;
         }
 
         .channel-item {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 12px;
-            border-radius: var(--radius-md);
+            padding: 8px 16px;
             cursor: pointer;
             transition: 0.15s;
             color: var(--text-muted);
-            margin-bottom: 2px;
         }
 
         .channel-item:hover {
@@ -611,7 +696,7 @@
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 2000;
             animation: fadeIn 0.2s ease-out;
         }
 
@@ -622,24 +707,54 @@
 
         .popup {
             background: var(--surface);
-            border: 1px solid var(--neon-green);
+            border: 2px solid var(--neon-green);
             border-radius: var(--radius);
             padding: 32px;
             max-width: 450px;
             width: 90%;
             box-shadow: 0 0 30px var(--neon-glow);
             animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .popup::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(208, 255, 19, 0.1),
+                transparent
+            );
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         @keyframes popIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            from { 
+                transform: scale(0.8) translateY(20px); 
+                opacity: 0; 
+            }
+            to { 
+                transform: scale(1) translateY(0); 
+                opacity: 1; 
+            }
         }
 
         .popup h3 {
             color: var(--neon-green);
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             margin-bottom: 20px;
+            text-shadow: 0 0 10px var(--neon-glow);
         }
 
         .popup-users {
@@ -649,40 +764,63 @@
             margin-bottom: 24px;
             max-height: 300px;
             overflow-y: auto;
+            padding-right: 8px;
         }
 
         .popup-user-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px;
+            padding: 15px;
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
             cursor: pointer;
-            transition: 0.15s;
+            transition: all 0.2s;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .popup-user-item:hover {
             border-color: var(--neon-green);
+            transform: scale(1.02);
+            box-shadow: 0 0 15px var(--neon-glow);
         }
 
         .popup-user-item.selected {
             border-color: var(--neon-green);
             background: #1a1a1a;
-            box-shadow: 0 0 10px var(--neon-glow);
+            box-shadow: 0 0 20px var(--neon-glow);
         }
 
         .popup-user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             background: #202020;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
+            font-size: 1.2rem;
             color: var(--neon-green);
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .popup-user-item.selected .popup-user-avatar {
+            border-color: var(--neon-green);
+            transform: scale(1.1);
         }
 
         .popup-user-info {
@@ -690,47 +828,55 @@
         }
 
         .popup-user-name {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text);
+            font-size: 1.1rem;
+            margin-bottom: 4px;
         }
 
         .popup-user-status {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #43b581;
         }
 
         .popup-checkbox {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             border: 2px solid var(--border);
-            border-radius: 5px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--neon-green);
-            font-size: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.2s;
         }
 
         .popup-user-item.selected .popup-checkbox {
             background: var(--neon-green);
             color: black;
             border-color: var(--neon-green);
+            transform: scale(1.1);
         }
 
         .popup-buttons {
             display: flex;
             gap: 12px;
             justify-content: flex-end;
-            margin-top: 20px;
+            margin-top: 30px;
         }
 
         .popup-btn {
-            padding: 10px 24px;
+            padding: 12px 28px;
             border-radius: 30px;
             border: none;
             font-weight: 600;
+            font-size: 1rem;
             cursor: pointer;
-            transition: 0.15s;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
         }
 
         .popup-btn-primary {
@@ -739,25 +885,32 @@
         }
 
         .popup-btn-primary:hover {
-            box-shadow: 0 0 20px var(--neon-green);
+            box-shadow: 0 0 25px var(--neon-green);
             transform: scale(1.05);
+        }
+
+        .popup-btn-primary:active {
+            transform: scale(0.95);
         }
 
         .popup-btn-secondary {
             background: transparent;
-            border: 1px solid var(--border);
+            border: 2px solid var(--border);
             color: var(--text);
         }
 
         .popup-btn-secondary:hover {
             border-color: var(--neon-green);
             color: var(--neon-green);
+            transform: scale(1.05);
         }
 
         .selected-count {
             color: var(--neon-green);
-            font-size: 0.9rem;
-            margin-bottom: 10px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-shadow: 0 0 5px var(--neon-glow);
         }
 
         @media (max-width: 900px) {
@@ -775,38 +928,35 @@
                 <span class="logo">BLYNKS</span>
             </div>
 
-            <div class="user-profile" onclick="toggleAccountDropdown()">
-                <div class="avatar" id="userAvatar">T</div>
-                <span class="user-name" id="userName">TestUser</span>
-                <div class="status-badge" id="userStatus"></div>
+            <!-- Profil Menü -->
+            <div class="profile-menu">
+                <div class="profile-button" id="profileButton" onclick="toggleProfileMenu()">
+                    <div class="avatar" id="userAvatar">T</div>
+                    <div class="user-info">
+                        <div class="user-name" id="userName">TestUser</div>
+                        <div class="user-status-text" id="userStatusText">Online</div>
+                    </div>
+                    <div class="status-badge" id="userStatus" style="background: #43b581;"></div>
+                </div>
                 
-                <!-- Account Dropdown -->
-                <div class="account-dropdown" id="accountDropdown">
-                    <div class="dropdown-header">
-                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px;">
-                            <div class="avatar" style="width: 50px; height: 50px;">T</div>
-                            <div>
-                                <div style="font-weight: 700;">TestUser</div>
-                                <div style="font-size: 0.8rem; color: var(--text-muted);">#0001</div>
-                            </div>
-                        </div>
-                        
+                <div class="profile-dropdown" id="profileDropdown">
+                    <div class="dropdown-section">
                         <div class="status-selector">
-                            <div class="status-option" onclick="setStatus('online', '#43b581')">
+                            <div class="status-option" onclick="setStatus('online', '#43b581', 'Online')">
                                 <span class="status-dot status-online"></span>
                                 <span>Online</span>
                             </div>
-                            <div class="status-option" onclick="setStatus('abwesend', '#faa61a')">
+                            <div class="status-option" onclick="setStatus('abwesend', '#faa61a', 'Abwesend')">
                                 <span class="status-dot status-idle"></span>
                                 <span>Abwesend</span>
                             </div>
-                            <div class="status-option" onclick="setStatus('beschäftigt', '#f04747')">
+                            <div class="status-option" onclick="setStatus('beschäftigt', '#f04747', 'Beschäftigt')">
                                 <span class="status-dot status-dnd"></span>
                                 <span>Beschäftigt</span>
                             </div>
-                            <div class="status-option" onclick="setStatus('offline', '#747f8d')">
+                            <div class="status-option" onclick="setStatus('offline', '#747f8d', 'Offline')">
                                 <span class="status-dot status-offline"></span>
-                                <span>Offline</span>
+                                <span>Offline (unsichtbar)</span>
                             </div>
                         </div>
                     </div>
@@ -824,13 +974,10 @@
             </div>
 
             <div class="top-actions">
-                <button class="action-btn" onclick="toggleServerPanel()">
-                    <span class="action-icon">🌐</span> Server
-                </button>
-                <button class="action-btn" onclick="showCallPopup()">
+                <button class="action-btn" onclick="playSound('click'); showCallPopup()">
                     <span class="action-icon">📞</span> Call starten
                 </button>
-                <button class="action-btn" onclick="showRoomPopup()">
+                <button class="action-btn" onclick="playSound('click'); showRoomPopup()">
                     <span class="action-icon">👥</span> Raum
                 </button>
             </div>
@@ -838,7 +985,26 @@
 
         <!-- HAUPTBEREICH -->
         <div class="content-row">
-            <!-- DM SEITENLEISTE -->
+            <!-- SERVER LISTE (links) -->
+            <div class="server-list-sidebar">
+                <div class="server-icon-large dm-server active-server" onclick="switchToDMs()" title="Direktnachrichten">
+                    💬
+                </div>
+                <div class="server-icon-large" onclick="switchServer('blynhks')" title="BLYNKS HQ">
+                    B
+                </div>
+                <div class="server-icon-large" onclick="switchServer('gaming')" title="Gaming Zone">
+                    🎮
+                </div>
+                <div class="server-icon-large" onclick="switchServer('music')" title="Music Lounge">
+                    🎧
+                </div>
+                <div class="server-icon-large" onclick="playSound('click'); showAddServerPopup()" title="Server hinzufügen">
+                    ➕
+                </div>
+            </div>
+
+            <!-- DM SEITENLEISTE (wird ausgeblendet wenn Server aktiv) -->
             <div class="dm-sidebar" id="dmSidebar">
                 <div class="sidebar-header">
                     <h3>DIREKTNACHRICHTEN</h3>
@@ -876,43 +1042,27 @@
                 </div>
             </div>
 
-            <!-- CHAT HAUPTFENSTER -->
-            <div class="chat-area">
-                <div class="chat-header" id="chatHeader">
-                    <span>💬</span> Lena_style · Direktnachricht
-                </div>
-
-                <div class="chat-messages" id="chatMessages"></div>
-
-                <div class="chat-input-area">
-                    <div class="input-wrapper">
-                        <input type="text" placeholder="Nachricht schreiben ..." id="chatInput">
-                        <button onclick="sendMessage()">Senden</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SERVER PANEL -->
-            <div class="server-panel" id="serverPanel">
+            <!-- SERVER CHANNEL PANEL (für BLYNKS HQ) -->
+            <div class="server-channel-panel" id="blynhksPanel">
                 <div class="server-header">
-                    <span>🌍 BLYNKS HQ</span>
-                    <span style="font-size: 0.8rem;">⚡ 42 online</span>
+                    <div class="server-name">BLYNKS HQ</div>
+                    <div class="server-status">⚡ 42 online · 12 in Voice</div>
                 </div>
-                <div class="server-list">
+                <div style="flex: 1; overflow-y: auto; padding: 0 8px;">
                     <!-- Text Channels -->
-                    <div class="server-category">
+                    <div class="channel-category">
                         <div class="category-title">📝 TEXTKANÄLE</div>
-                        <div class="channel-item active-channel" onclick="switchChannel('allgemein')">
+                        <div class="channel-item active-channel" onclick="switchChannel('allgemein', 'BLYNKS HQ')">
                             <span class="channel-icon">💬</span>
                             <span class="channel-name">allgemein</span>
                             <span class="channel-users">12</span>
                         </div>
-                        <div class="channel-item" onclick="switchChannel('off-topic')">
+                        <div class="channel-item" onclick="switchChannel('off-topic', 'BLYNKS HQ')">
                             <span class="channel-icon">🗣️</span>
                             <span class="channel-name">off-topic</span>
                             <span class="channel-users">5</span>
                         </div>
-                        <div class="channel-item" onclick="switchChannel('support')">
+                        <div class="channel-item" onclick="switchChannel('support', 'BLYNKS HQ')">
                             <span class="channel-icon">❓</span>
                             <span class="channel-name">support</span>
                             <span class="channel-users">3</span>
@@ -920,7 +1070,7 @@
                     </div>
                     
                     <!-- Voice Channels -->
-                    <div class="server-category">
+                    <div class="channel-category">
                         <div class="category-title">🔊 SPRACHKANÄLE</div>
                         <div class="channel-item" onclick="joinVoice('general-voice')">
                             <span class="channel-icon">🔊</span>
@@ -938,39 +1088,95 @@
                             <span class="channel-users">3/8</span>
                         </div>
                     </div>
-                    
-                    <!-- Gaming Zone Server -->
-                    <div style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 20px;">
-                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-                            <span style="color: var(--neon-green);">🎮 GAMING ZONE</span>
-                        </div>
-                        <div class="channel-item" onclick="switchServerChannel('lfg')">
+                </div>
+            </div>
+
+            <!-- SERVER CHANNEL PANEL (für Gaming Zone) -->
+            <div class="server-channel-panel" id="gamingPanel">
+                <div class="server-header">
+                    <div class="server-name">Gaming Zone</div>
+                    <div class="server-status">🎮 28 online · 8 in Voice</div>
+                </div>
+                <div style="flex: 1; overflow-y: auto; padding: 0 8px;">
+                    <div class="channel-category">
+                        <div class="category-title">📝 TEXTKANÄLE</div>
+                        <div class="channel-item active-channel" onclick="switchChannel('lfg', 'Gaming Zone')">
                             <span class="channel-icon">🎯</span>
                             <span class="channel-name">lfg</span>
                             <span class="channel-users">8</span>
                         </div>
+                        <div class="channel-item" onclick="switchChannel('clips', 'Gaming Zone')">
+                            <span class="channel-icon">🎬</span>
+                            <span class="channel-name">clips</span>
+                            <span class="channel-users">4</span>
+                        </div>
+                    </div>
+                    
+                    <div class="channel-category">
+                        <div class="category-title">🔊 SPRACHKANÄLE</div>
                         <div class="channel-item" onclick="joinVoice('game-voice')">
                             <span class="channel-icon">🔊</span>
                             <span class="channel-name">Game Voice</span>
                             <span class="channel-users">3/10</span>
                         </div>
-                    </div>
-                    
-                    <!-- Music Lounge Server -->
-                    <div style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 20px;">
-                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-                            <span style="color: var(--neon-green);">🎧 MUSIC LOUNGE</span>
+                        <div class="channel-item" onclick="joinVoice('competitive')">
+                            <span class="channel-icon">🎮</span>
+                            <span class="channel-name">Competitive</span>
+                            <span class="channel-users">5/5</span>
                         </div>
-                        <div class="channel-item" onclick="switchServerChannel('playlists')">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SERVER CHANNEL PANEL (für Music Lounge) -->
+            <div class="server-channel-panel" id="musicPanel">
+                <div class="server-header">
+                    <div class="server-name">Music Lounge</div>
+                    <div class="server-status">🎵 15 online · 6 in Voice</div>
+                </div>
+                <div style="flex: 1; overflow-y: auto; padding: 0 8px;">
+                    <div class="channel-category">
+                        <div class="category-title">📝 TEXTKANÄLE</div>
+                        <div class="channel-item active-channel" onclick="switchChannel('playlists', 'Music Lounge')">
                             <span class="channel-icon">🎵</span>
                             <span class="channel-name">playlists</span>
                             <span class="channel-users">6</span>
                         </div>
+                        <div class="channel-item" onclick="switchChannel('song-requests', 'Music Lounge')">
+                            <span class="channel-icon">📻</span>
+                            <span class="channel-name">song-requests</span>
+                            <span class="channel-users">3</span>
+                        </div>
+                    </div>
+                    
+                    <div class="channel-category">
+                        <div class="category-title">🔊 SPRACHKANÄLE</div>
                         <div class="channel-item" onclick="joinVoice('music-chill')">
                             <span class="channel-icon">🔊</span>
                             <span class="channel-name">Chill Zone</span>
                             <span class="channel-users">5/15</span>
                         </div>
+                        <div class="channel-item" onclick="joinVoice('music-prod')">
+                            <span class="channel-icon">🎧</span>
+                            <span class="channel-name">Music Production</span>
+                            <span class="channel-users">1/5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHAT HAUPTFENSTER -->
+            <div class="chat-area">
+                <div class="chat-header" id="chatHeader">
+                    <span>💬</span> Lena_style · Direktnachrichten
+                </div>
+
+                <div class="chat-messages" id="chatMessages"></div>
+
+                <div class="chat-input-area">
+                    <div class="input-wrapper">
+                        <input type="text" placeholder="Nachricht schreiben ..." id="chatInput">
+                        <button onclick="sendMessage()">Senden</button>
                     </div>
                 </div>
             </div>
@@ -981,7 +1187,7 @@
     <div class="popup-overlay" id="callPopup">
         <div class="popup">
             <h3>📞 Anruf starten</h3>
-            <p>Wähle die Teilnehmer aus (mehrfach möglich):</p>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">Wähle die Teilnehmer aus (mehrfach möglich):</p>
             <div class="selected-count" id="selectedCount">0 ausgewählt</div>
             <div class="popup-users" id="callUsers">
                 <div class="popup-user-item" onclick="toggleUserSelection('Lena_style')" id="user-Lena_style">
@@ -1028,14 +1234,93 @@
     <div class="popup-overlay" id="roomPopup">
         <div class="popup">
             <h3>👥 Raum erstellen</h3>
-            <p>Diese Funktion ist bald verfügbar!</p>
+            <p style="color: var(--text-muted); font-size: 1.1rem; margin: 20px 0;">Diese Funktion ist bald verfügbar! 🚀</p>
             <div class="popup-buttons">
                 <button class="popup-btn popup-btn-secondary" onclick="hideRoomPopup()">OK</button>
             </div>
         </div>
     </div>
 
+    <!-- ADD SERVER POPUP -->
+    <div class="popup-overlay" id="addServerPopup">
+        <div class="popup">
+            <h3>➕ Server erstellen</h3>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">Wähle eine Option:</p>
+            <div class="popup-users" style="margin-bottom: 20px;">
+                <div class="popup-user-item" onclick="createServer()">
+                    <div class="popup-user-avatar">✨</div>
+                    <div class="popup-user-info">
+                        <div class="popup-user-name">Neuen Server erstellen</div>
+                        <div class="popup-user-status">Erstelle deinen eigenen Server</div>
+                    </div>
+                </div>
+                <div class="popup-user-item" onclick="joinServer()">
+                    <div class="popup-user-avatar">🔗</div>
+                    <div class="popup-user-info">
+                        <div class="popup-user-name">Server beitreten</div>
+                        <div class="popup-user-status">Mit Einladungslink beitreten</div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup-buttons">
+                <button class="popup-btn popup-btn-secondary" onclick="hideAddServerPopup()">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Audio Context für Sounds
+        let audioContext = null;
+
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        }
+
+        function playSound(type) {
+            initAudio();
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            switch(type) {
+                case 'click':
+                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1);
+                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                    oscillator.stop(audioContext.currentTime + 0.1);
+                    break;
+                    
+                case 'notification':
+                    oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime + 0.1);
+                    oscillator.frequency.setValueAtTime(600, audioContext.currentTime + 0.2);
+                    gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    oscillator.stop(audioContext.currentTime + 0.3);
+                    break;
+                    
+                case 'success':
+                    oscillator.frequency.setValueAtTime(500, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(600, audioContext.currentTime + 0.1);
+                    oscillator.frequency.setValueAtTime(700, audioContext.currentTime + 0.2);
+                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    oscillator.stop(audioContext.currentTime + 0.3);
+                    break;
+            }
+            
+            oscillator.start();
+        }
+
         // Hintergrund Partikel
         function initParticles() {
             const container = document.getElementById('bgParticles');
@@ -1053,40 +1338,38 @@
             }
         }
 
-        // Account Dropdown
-        function toggleAccountDropdown() {
-            const dropdown = document.getElementById('accountDropdown');
+        // Profil Menü
+        function toggleProfileMenu() {
+            const button = document.getElementById('profileButton');
+            const dropdown = document.getElementById('profileDropdown');
+            button.classList.toggle('expanded');
             dropdown.classList.toggle('show');
+            playSound('click');
         }
 
-        function setStatus(status, color) {
-            const statusBadge = document.getElementById('userStatus');
-            statusBadge.style.background = color;
-            toggleAccountDropdown();
-            
-            let statusText = '';
-            switch(status) {
-                case 'online': statusText = 'Online'; break;
-                case 'abwesend': statusText = 'Abwesend'; break;
-                case 'beschäftigt': statusText = 'Beschäftigt'; break;
-                case 'offline': statusText = 'Offline'; break;
-            }
-            console.log(`Status geändert zu: ${statusText}`);
+        function setStatus(status, color, text) {
+            document.getElementById('userStatus').style.background = color;
+            document.getElementById('userStatusText').textContent = text;
+            toggleProfileMenu();
+            playSound('success');
         }
 
         function showUserSettings() {
-            toggleAccountDropdown();
-            alert('Einstellungen werden geladen...');
+            toggleProfileMenu();
+            playSound('click');
+            alert('⚙️ Einstellungen werden geladen...');
         }
 
         function showProfile() {
-            toggleAccountDropdown();
-            alert('Profil bearbeiten...');
+            toggleProfileMenu();
+            playSound('click');
+            alert('👤 Profil bearbeiten...');
         }
 
         function logout() {
-            toggleAccountDropdown();
-            alert('Abgemeldet!');
+            toggleProfileMenu();
+            playSound('click');
+            alert('👋 Auf Wiedersehen!');
         }
 
         // DM Sidebar toggle
@@ -1095,44 +1378,107 @@
             const btn = document.getElementById('toggleDmBtn');
             sidebar.classList.toggle('collapsed');
             btn.innerHTML = sidebar.classList.contains('collapsed') ? '▶' : '◀';
+            playSound('click');
         }
 
-        // Server Panel toggle
-        function toggleServerPanel() {
-            const panel = document.getElementById('serverPanel');
-            panel.classList.toggle('open');
+        // Server wechseln
+        function switchToDMs() {
+            playSound('click');
+            
+            // Aktiven Server highlighten
+            document.querySelectorAll('.server-icon-large').forEach(el => {
+                el.classList.remove('active-server');
+            });
+            document.querySelector('.dm-server').classList.add('active-server');
+            
+            // DM Sidebar zeigen, Server Panels verstecken
+            document.getElementById('dmSidebar').classList.remove('hidden');
+            document.querySelectorAll('.server-channel-panel').forEach(panel => {
+                panel.classList.remove('show');
+            });
+            
+            // Chat Header anpassen
+            document.getElementById('chatHeader').innerHTML = `<span>💬</span> Lena_style · Direktnachrichten`;
+            
+            // DMs rendern
+            currentUser = 'Lena_style';
+            renderMessages();
         }
 
-        // Server Channels
-        function switchChannel(channel) {
+        function switchServer(server) {
+            playSound('click');
+            
+            // Aktiven Server highlighten
+            document.querySelectorAll('.server-icon-large').forEach(el => {
+                el.classList.remove('active-server');
+            });
+            event.currentTarget.classList.add('active-server');
+            
+            // DM Sidebar verstecken
+            document.getElementById('dmSidebar').classList.add('hidden');
+            
+            // Alle Server Panels verstecken
+            document.querySelectorAll('.server-channel-panel').forEach(panel => {
+                panel.classList.remove('show');
+            });
+            
+            // Richtiges Server Panel zeigen
+            if (server === 'blynhks') {
+                document.getElementById('blynhksPanel').classList.add('show');
+                document.getElementById('chatHeader').innerHTML = `<span>💬</span> #allgemein · BLYNKS HQ`;
+            } else if (server === 'gaming') {
+                document.getElementById('gamingPanel').classList.add('show');
+                document.getElementById('chatHeader').innerHTML = `<span>💬</span> #lfg · Gaming Zone`;
+            } else if (server === 'music') {
+                document.getElementById('musicPanel').classList.add('show');
+                document.getElementById('chatHeader').innerHTML = `<span>💬</span> #playlists · Music Lounge`;
+            }
+            
+            // Server-spezifische Nachrichten laden
+            renderServerMessages();
+        }
+
+        function switchChannel(channel, server) {
+            playSound('click');
+            
             document.querySelectorAll('.channel-item').forEach(el => {
                 el.classList.remove('active-channel');
             });
             event.currentTarget.classList.add('active-channel');
-            document.getElementById('chatHeader').innerHTML = `<span>💬</span> #${channel} · BLYNKS HQ`;
-            renderServerMessages(channel);
-        }
-
-        function switchServerChannel(channel) {
-            document.getElementById('chatHeader').innerHTML = `<span>💬</span> #${channel} · Gaming Zone`;
+            
+            document.getElementById('chatHeader').innerHTML = `<span>💬</span> #${channel} · ${server}`;
             renderServerMessages(channel);
         }
 
         function joinVoice(channel) {
+            playSound('notification');
             alert(`🔊 Dem Sprachkanal "${channel}" beigetreten!`);
         }
 
-        function renderServerMessages(channel) {
+        function renderServerMessages(channel = 'allgemein') {
             const container = document.getElementById('chatMessages');
-            container.innerHTML = `
-                <div class="message">
-                    <div class="message-avatar">B</div>
+            container.innerHTML = '';
+            
+            const messages = [
+                { author: 'System', avatar: '⚡', text: `Willkommen im Kanal #${channel}!`, time: '12:00', own: false },
+                { author: 'User1', avatar: 'U', text: 'Hey zusammen!', time: '12:01', own: false },
+                { author: 'Du', avatar: 'T', text: 'Hi!', time: '12:02', own: true },
+            ];
+            
+            messages.forEach(msg => {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `message ${msg.own ? 'own' : ''}`;
+                msgDiv.innerHTML = `
+                    <div class="message-avatar">${msg.avatar}</div>
                     <div class="message-bubble">
-                        <div class="message-author">Bot<span class="message-time">12:00</span></div>
-                        <div>Willkommen im Kanal #${channel}!</div>
+                        ${!msg.own ? '<div class="message-author">' + msg.author + '<span class="message-time">' + msg.time + '</span></div>' : '<div style="text-align: right;"><span class="message-time">' + msg.time + '</span></div>'}
+                        <div>${msg.text}</div>
                     </div>
-                </div>
-            `;
+                `;
+                container.appendChild(msgDiv);
+            });
+            
+            container.scrollTop = container.scrollHeight;
         }
 
         // Chat Histories für DMs
@@ -1183,6 +1529,8 @@
             const text = input.value.trim();
             if (!text) return;
 
+            playSound('click');
+
             const now = new Date();
             const timeStr = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
             
@@ -1200,6 +1548,27 @@
 
             renderMessages();
             input.value = '';
+
+            // Simulierte Antwort
+            setTimeout(() => {
+                playSound('notification');
+                const answerTexts = {
+                    'Lena_style': 'Coole Nachricht! (Demo)',
+                    'MaxM': 'Alles klar, check ich!',
+                    'Chris_': 'Verstanden 👍',
+                    'Jule': 'Nice! 😎'
+                };
+                
+                chatHistories[currentUser].push({
+                    author: currentUser,
+                    avatar: currentUser.charAt(0),
+                    text: answerTexts[currentUser] || 'Danke für deine Nachricht!',
+                    time: new Date().getHours().toString().padStart(2,'0') + ':' + new Date().getMinutes().toString().padStart(2,'0'),
+                    own: false
+                });
+                
+                renderMessages();
+            }, 1200);
         }
 
         // DM items klickbar
@@ -1207,17 +1576,29 @@
             const dmItems = document.querySelectorAll('.dm-item');
             dmItems.forEach(item => {
                 item.addEventListener('click', function() {
+                    playSound('click');
                     dmItems.forEach(i => i.classList.remove('active-dm'));
                     this.classList.add('active-dm');
                     
                     currentUser = this.dataset.user;
-                    document.getElementById('chatHeader').innerHTML = `<span>💬</span> ${currentUser} · Direktnachricht`;
+                    
+                    // Sicherstellen, dass DM Modus aktiv ist
+                    document.querySelectorAll('.server-icon-large').forEach(el => {
+                        el.classList.remove('active-server');
+                    });
+                    document.querySelector('.dm-server').classList.add('active-server');
+                    document.getElementById('dmSidebar').classList.remove('hidden');
+                    document.querySelectorAll('.server-channel-panel').forEach(panel => {
+                        panel.classList.remove('show');
+                    });
+                    
+                    document.getElementById('chatHeader').innerHTML = `<span>💬</span> ${currentUser} · Direktnachrichten`;
                     renderMessages();
                 });
             });
         }
 
-        // Call Popup mit Mehrfachauswahl
+        // Call Popup
         function showCallPopup() {
             selectedUsers = [];
             updateSelectedCount();
@@ -1241,6 +1622,7 @@
                 element.classList.add('selected');
             }
             updateSelectedCount();
+            playSound('click');
         }
 
         function updateSelectedCount() {
@@ -1253,16 +1635,40 @@
                 return;
             }
             hideCallPopup();
+            playSound('success');
             alert(`📞 Gruppenanruf gestartet mit: ${selectedUsers.join(', ')}`);
         }
 
         // Room Popup
         function showRoomPopup() {
             document.getElementById('roomPopup').style.display = 'flex';
+            playSound('click');
         }
 
         function hideRoomPopup() {
             document.getElementById('roomPopup').style.display = 'none';
+        }
+
+        // Add Server Popup
+        function showAddServerPopup() {
+            document.getElementById('addServerPopup').style.display = 'flex';
+            playSound('click');
+        }
+
+        function hideAddServerPopup() {
+            document.getElementById('addServerPopup').style.display = 'none';
+        }
+
+        function createServer() {
+            hideAddServerPopup();
+            playSound('success');
+            alert('✨ Neuen Server erstellen (Demo)');
+        }
+
+        function joinServer() {
+            hideAddServerPopup();
+            playSound('success');
+            alert('🔗 Server beitreten (Demo)');
         }
 
         // Enter Taste
@@ -1275,11 +1681,13 @@
 
         // Klick außerhalb schließt Dropdown
         document.addEventListener('click', function(event) {
-            const dropdown = document.getElementById('accountDropdown');
-            const profile = document.querySelector('.user-profile');
+            const profileMenu = document.querySelector('.profile-menu');
+            const dropdown = document.getElementById('profileDropdown');
+            const button = document.getElementById('profileButton');
             
-            if (!profile.contains(event.target) && dropdown.classList.contains('show')) {
+            if (!profileMenu.contains(event.target) && dropdown.classList.contains('show')) {
                 dropdown.classList.remove('show');
+                button.classList.remove('expanded');
             }
         });
 
@@ -1288,6 +1696,9 @@
             renderMessages();
             setupDmClicks();
             document.querySelector('.dm-item').classList.add('active-dm');
+            
+            // Audio Context initialisieren beim ersten Klick
+            document.addEventListener('click', initAudio, { once: true });
         };
     </script>
 </body>
