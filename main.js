@@ -31,6 +31,49 @@ const requestHandler = (req, res) => {
             }
         });
     }
+		else if (req.url === '/login') {
+    const filePath = path.join(__dirname, 'login.html');
+    
+    fs.readFile(filePath, (err, content) => {
+        if (err) {
+            console.error(`Fehler beim Laden der Login-Seite:`, err);
+            res.writeHead(500);
+            res.end('Login-Seite nicht gefunden');
+        } else {
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.end(content);
+        }
+    });
+}
+
+		else if (req.url === '/impressum') {
+    const filePath = path.join(__dirname, 'impressum.html');
+    
+    fs.readFile(filePath, (err, content) => {
+        if (err) {
+            console.error(`Fehler beim Laden der Impress:`, err);
+            res.writeHead(500);
+            res.end('Impress-Seite nicht gefunden');
+        } else {
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.end(content);
+        }
+    });
+}
+else if (req.url === '/app') {
+    const filePath = path.join(__dirname, 'app.html');
+    
+    fs.readFile(filePath, (err, content) => {
+        if (err) {
+            console.error(`Fehler beim Laden der Demo App seite:`, err);
+            res.writeHead(500);
+            res.end('Demo-App-Seite nicht gefunden');
+        } else {
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.end(content);
+        }
+    });
+}
     else if (req.url.endsWith('.png')) {
         const filename = path.basename(req.url);
         const filepath = path.join(__dirname, 'image', filename);

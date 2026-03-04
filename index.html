@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blynks - Coming Soon</title>
+    <title>BLYNKS - Coming Soon</title>
+    
+
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="shortcut icon" href="logo.png">
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
@@ -240,6 +245,99 @@
         }
         
 
+        /* Cookie Banner Styles */
+        .cookie-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            max-width: 400px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            animation: slideUp 0.5s ease-out;
+            margin: 0 auto;
+        }
+        
+        .cookie-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .cookie-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .cookie-header img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+        
+        .cookie-header h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--neon-green);
+        }
+        
+        .cookie-text {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+        
+        .cookie-note {
+            font-size: 0.75rem;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .cookie-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        
+        .cookie-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--card-bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        
+        .cookie-btn:hover {
+            border-color: var(--neon-green);
+        }
+        
+        .cookie-btn.accept {
+            background: var(--neon-green);
+            color: var(--bg-dark);
+            border: none;
+        }
+        
+        .cookie-btn.accept:hover {
+            background: var(--neon-green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(208, 255, 19, 0.3);
+        }
+        
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 3rem;
@@ -247,6 +345,13 @@
             
             .feature-card {
                 padding: 25px;
+            }
+            
+            .cookie-banner {
+                max-width: 100%;
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
             }
         }
         
@@ -264,7 +369,7 @@
 <body>
     <div class="container">
         <header>
-            <div class="logo">Blynks</div>
+            <div class="logo">BLYNKS</div>
         </header>
         
         <section class="hero">
@@ -282,43 +387,37 @@
             </h1>
             
             <p class="hero-subtitle">
-                <span class="neon-highlight">Blynks</span> verbindet Menschen durch schnelle, sichere und stylische Kommunikation. Sei unter den Ersten, die die nächste Generation des Chattens erleben.
+                <span class="neon-highlight">BLYNKS</span> verbindet Menschen durch schnelle, sichere und stylische Kommunikation. Sei unter den Ersten, die die nächste Generation des Chattens erleben.
             </p>
             
-            <div class="features">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3 class="feature-title">Blitzschnell</h3>
-                    <p class="feature-desc">Sofortige Nachrichtenübermittlung ohne Verzögerungen.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3 class="feature-title">Sicher & Privat</h3>
-                    <p class="feature-desc">End-zu-End-Verschlüsselung für deine vertraulichen Gespräche.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-magic"></i>
-                    </div>
-                    <h3 class="feature-title">Smart Features</h3>
-                    <p class="feature-desc">Innovative Funktionen, die deine Chat-Erfahrung revolutionieren.</p>
-                </div>
-            </div>
         </section>
         
         <footer>
-            &copy; 2026 Blynks. Alle Rechte vorbehalten. <a href="impressum" class="footer-link">Impressum</a>
+            &copy; 2026 BLYNKS. Alle Rechte vorbehalten.
         </footer>
     </div>
     
-    <script>
 
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-content">
+            <div class="cookie-header">
+                <img src="cok.png" alt="Cookie Icon" onerror="this.style.display='none'">
+                <h3>Hinweis zu Cookies</h3>
+            </div>
+            <p class="cookie-text">
+                Diese Website verwendet keine Cookies zur Nachverfolgung oder Analyse. Wir respektieren deine Privatsphäre.
+            </p>
+            <p class="cookie-note">
+                <small>Wir sammeln grundsätzlich keine Cookies. Diese Meldung dient nur der Transparenz.</small>
+            </p>
+            <div class="cookie-buttons">
+                <button class="cookie-btn accept" onclick="acceptCookies()">Verstanden</button>
+                <button class="cookie-btn" onclick="acceptCookies()">Schließen</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
         function createFloatingDots() {
             const container = document.getElementById('dots-container');
             const dotCount = 50;
@@ -345,10 +444,17 @@
                 container.appendChild(dot);
             }
         }
-        
-        window.addEventListener('load', createFloatingDots);
+
+        function acceptCookies() {
+            const banner = document.getElementById('cookieBanner');
+            banner.style.display = 'none';
+        }
+
+        window.addEventListener('load', function() {
+            createFloatingDots();
+
+            document.getElementById('cookieBanner').style.display = 'block';
+        });
     </script>
 </body>
 </html>
-
-
