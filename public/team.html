@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BLYNKS – Team</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080808;
+      --surface: #111111;
+      --border: #1e1e1e;
+      --accent: #c8f135;
+      --accent2: #7b61ff;
+      --text: #f0f0f0;
+      --muted: #555;
+      --muted2: #888;
+      --neon-green: #d0ff13;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Logo / Nav ── */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem 4rem;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      color: var(--neon-green);
+      text-decoration: none;
+      position: relative;
+      text-shadow: 0 0 10px rgba(208, 255, 19, 0.5);
+      animation: pulse 3s infinite;
+    }
+
+    .logo span { 
+      color: var(--neon-green); 
+    }
+
+    @keyframes pulse {
+      0%, 100% { text-shadow: 0 0 10px rgba(200, 241, 53, 0.5); }
+      50% { text-shadow: 0 0 20px rgba(200, 241, 53, 0.8); }
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    nav ul a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover,
+    nav ul a.active { 
+      color: var(--neon-green); 
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 8rem 4rem 5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .hero-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .hero-tag::before {
+      content: '';
+      display: block;
+      width: 2rem;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      margin-bottom: 2.5rem;
+    }
+
+    h1 em { font-style: normal; color: var(--accent); }
+
+    .hero-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--muted2);
+      line-height: 1.8;
+      max-width: 480px;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 4rem;
+    }
+
+    /* ── Team grid (nur Gründer) ── */
+    .team-section { 
+      padding: 6rem 4rem 4rem; 
+      max-width: 1200px; 
+      margin: 0 auto; 
+    }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 4rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: var(--border);
+      border: 1.5px solid var(--border);
+      margin-bottom: 3rem; /* abstand zu weiteren entwicklern */
+    }
+
+    .member {
+      background: var(--bg);
+      padding: 3.5rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s;
+      cursor: default;
+    }
+
+    .member::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .member:hover { background: #0d0d0d; }
+    .member:hover::after { transform: scaleX(1); }
+
+    .member-number {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.2em;
+      margin-bottom: 2.5rem;
+    }
+
+    .member-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      transition: border-color 0.3s;
+    }
+
+    .member-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .member:hover .member-avatar {
+      border-color: var(--accent);
+    }
+
+    .member-avatar::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1px dashed var(--border);
+      transition: border-color 0.3s;
+    }
+
+    .member:hover .member-avatar::before {
+      border-color: var(--accent);
+      animation: spin 8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .member-name {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.4rem;
+      line-height: 1.1;
+    }
+
+    .member-handle {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      margin-bottom: 1.2rem;
+    }
+
+    .member-role {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .member-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+
+    .tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      color: var(--muted2);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 0.25rem 0.6rem;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+
+    .member:hover .tag { border-color: #2a2a2a; }
+
+    .tag.highlight {
+      color: var(--accent);
+      border-color: rgba(200, 241, 53, 0.2);
+      background: rgba(200, 241, 53, 0.04);
+    }
+
+    .co-founder-badge {
+      position: absolute;
+      top: 2.5rem;
+      right: 2.5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.5rem;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      border: 1px solid rgba(200,241,53,0.3);
+      padding: 0.25rem 0.6rem;
+      text-transform: uppercase;
+      background: rgba(200,241,53,0.04);
+      white-space: nowrap;
+    }
+
+    /* ── Weitere Entwickler – skalierbarer Bereich ── */
+    .developers-section {
+      padding: 2rem 4rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .developers-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .developers-header h3 {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      color: var(--muted2);
+      text-transform: uppercase;
+    }
+
+    .developers-header-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Container für die kleine Entwicklerliste – flexibel erweiterbar */
+    .dev-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem; /* abstand zwischen den kleinen karten */
+    }
+
+    /* Kleine Entwickler-Card – kompakt, später einfach weitere .dev-card hinzufügen */
+    .dev-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 0.75rem 1.2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      transition: border-color 0.2s, background 0.2s;
+      cursor: default;
+      min-width: 220px;
+      flex: 0 1 auto; /* nebeneinander, umbrechen wenn nötig */
+    }
+
+    .dev-card:hover {
+      border-color: var(--accent);
+      background: #141414;
+    }
+
+    .dev-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .dev-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .dev-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dev-name {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    .dev-handle {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+    }
+
+    .dev-role-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.5rem;
+      color: var(--muted2);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.5rem;
+      margin-left: auto; /* schiebt es nach rechts */
+      white-space: nowrap;
+    }
+
+    /* ── Values strip ── */
+    .values-strip { 
+      border-top: 1px solid var(--border); 
+      border-bottom: 1px solid var(--border); 
+      padding: 2rem 0; 
+      overflow: hidden; 
+      position: relative; 
+    }
+
+    .values-track {
+      display: flex;
+      gap: 4rem;
+      animation: marquee 20s linear infinite;
+      white-space: nowrap;
+      width: max-content;
+    }
+
+    .values-strip:hover .values-track { animation-play-state: paused; }
+
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    .values-item {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .values-item::after {
+      content: '✦';
+      color: var(--accent);
+      font-size: 0.5rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 3rem 4rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 3rem;
+    }
+
+    footer p {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    footer a {
+      color: var(--muted2);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--accent); }
+
+    /* ── Fade in animations ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .fade-up:nth-child(1) { animation-delay: 0.1s; }
+    .fade-up:nth-child(2) { animation-delay: 0.2s; }
+    .fade-up:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    .hero > * {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .hero > *:nth-child(1) { animation-delay: 0.05s; }
+    .hero > *:nth-child(2) { animation-delay: 0.15s; }
+    .hero > *:nth-child(3) { animation-delay: 0.25s; }
+
+    @media (max-width: 900px) {
+      .hero { padding: 5rem 2rem 4rem; }
+      .team-section { padding: 4rem 2rem 2rem; }
+      .developers-section { padding: 2rem 2rem 4rem; }
+      .team-grid { grid-template-columns: 1fr; }
+      .divider { margin: 0 2rem; }
+      footer { padding: 2rem; flex-direction: column; gap: 1rem; text-align: center; }
+      nav { padding: 1.5rem 2rem; }
+      nav ul { gap: 1.5rem; }
+      .dev-list { justify-content: center; }
+      .co-founder-badge { top: 1.5rem; right: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+    <a class="logo" href="#">BL<span>Y</span>NKS</a>
+    <ul>
+      <li><a href="/">Start</a></li>
+      <li><a href="team" class="active">Team</a></li>
+      <li><a href="impressum">Impressum</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-tag">Das Team dahinter</div>
+  <h1>Drei Köpfe.<br/>Eine <em>Vision.</em></h1>
+</section>
+
+<div class="divider"></div>
+
+<!-- NUR DIE DREI GRÜNDER IM GROSSEN GRID -->
+<section class="team-section">
+  <div class="section-label">Mitgründer &amp; Kernteam</div>
+  <div class="team-grid">
+
+    <!-- Lenodro -->
+    <div class="member fade-up">
+      <span class="co-founder-badge">CEO & Founder</span>
+      <div class="member-number">01 / 03</div>
+      <div class="member-avatar"><img src="lenodro.png" alt="Lenodro"></div>
+      <div class="member-name">Leon Matyba</div>
+      <div class="member-handle">@lenodro</div>
+      <div class="member-role">Marketing &amp; UI Design</div>
+      <div class="member-tags">
+        <span class="tag highlight">UI / UX</span>
+        <span class="tag">Branding</span>
+        <span class="tag">Marketing</span>
+        <span class="tag">CSS-Designer</span>
+        <span class="tag">Socials</span>
+      </div>
+    </div>
+
+    <!-- jojosstudio -->
+    <div class="member fade-up">
+      <span class="co-founder-badge">CSO & Co Founder</span>
+      <div class="member-number">02 / 03</div>
+      <div class="member-avatar"><img src="jojo.png" alt="jojosstudio"></div>
+      <div class="member-name">Julien Sperling</div>
+      <div class="member-handle">@jojosstudio</div>
+      <div class="member-role">Frontend-Entwicklung</div>
+      <div class="member-tags">
+        <span class="tag highlight">HTML</span>
+        <span class="tag">CSS</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">Datenschutz & Verschlüsselung</span>
+      </div>
+    </div>
+
+    <!-- SPRNGLS -->
+    <div class="member fade-up">
+      <span class="co-founder-badge">CTO & Co Founder</span>
+      <div class="member-number">03 / 03</div>
+      <div class="member-avatar"><img src="sprngls.png" alt="SPRNGLS"></div>
+      <div class="member-name">Luis Schulze</div>
+      <div class="member-handle">@sprngls</div>
+      <div class="member-role">Backend-Entwicklung</div>
+      <div class="member-tags">
+        <span class="tag highlight">Node.js</span>
+        <span class="tag">MySQL</span>
+        <span class="tag">SQLite</span>
+        <span class="tag">Daten Verarbeitung</span>
+        <span class="tag">Typescript</span>
+        <span class="tag">Infra</span>
+        <span class="tag">Rechtliches</span>
+      </div>
+    </div>
+
+  </div> <!-- Ende team-grid (Gründer) -->
+
+</section>
+
+<!-- KLEINER BEREICH FÜR WEITERE ENTWICKLER – einfach erweiterbar -->
+<section class="developers-section">
+  <div class="developers-header">
+    <div class="developers-header-line"></div>
+    <h3>Weitere Entwickler & Mitarbeiter</h3>
+    <div class="developers-header-line"></div>
+  </div>
+
+  <div class="dev-list">
+    <!-- ███ Hier kann man beliebig viele .dev-card hinzufügen ███ -->
+    <!-- Neel Hoffmann – platix, klein dargestellt -->
+    <div class="dev-card">
+      <div class="dev-avatar"><img src="platix.png" alt="platix"></div>
+      <div class="dev-info">
+        <span class="dev-name">Neel Hoffmann</span>
+        <span class="dev-handle">@platix</span>
+      </div>
+      <span class="dev-role-tag">Frontend</span>
+    </div>
+
+    <!-- Beispiel für eine weitere Person – einfach auskommentieren oder kopieren 
+    <div class="dev-card">
+      <div class="dev-avatar"><img src="team/next.png" alt="next"></div>
+      <div class="dev-info">
+        <span class="dev-name">Max Mustermann</span>
+        <span class="dev-handle">@max</span>
+      </div>
+      <span class="dev-role-tag">Backend</span>
+    </div>
+    -->
+
+    <!-- Falls später mehr kommen: einfach weitere .dev-card hier einfügen, 
+         sie werden automatisch nebeneinander angezeigt und bei zu wenig Platz umgebrochen. -->
+  </div>
+  <!-- Kleiner Hinweis, dass das Team wächst (optional) -->
+  <p style="font-family: 'Space Mono', monospace; font-size: 0.6rem; color: var(--muted2); margin-top: 1.5rem; letter-spacing: 0.05em;">
+    + weitere Talente in Verstärkung
+  </p>
+</section>
+
+<!-- Scrolling values -->
+<div class="values-strip">
+  <div class="values-track">
+    <span class="values-item">Schnell</span>
+    <span class="values-item">Sicher</span>
+    <span class="values-item">Open Source</span>
+    <span class="values-item">Made in Germany</span>
+    <span class="values-item">Datenschutz zuerst</span>
+    <span class="values-item">Community-driven</span>
+    <span class="values-item">Schnell</span>
+    <span class="values-item">Sicher</span>
+    <span class="values-item">Open Source</span>
+    <span class="values-item">Made in Germany</span>
+    <span class="values-item">Datenschutz zuerst</span>
+    <span class="values-item">Community-driven</span>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 BLYNKS. Alle Rechte vorbehalten.</p>
+  <p><a href="impressum">Impressum</a></p>
+</footer>
+
+</body>
+</html>

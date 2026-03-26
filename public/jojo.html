@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JojosStudio · Code & Security</title>
+    
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="shortcut icon" href="logo.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Base Styles - angelehnt an dein Design */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #080808;
+            --surface: #111111;
+            --border: #1e1e1e;
+            --accent: #c8f135;  /* Dein Neon-Grün */
+            --accent2: #7b61ff;
+            --text: #f0f0f0;
+            --muted: #555;
+            --muted2: #888;
+            --neon-green: #d0ff13;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Syne', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* 3D Canvas Hintergrund */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 4rem;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: rgba(8,8,8,0.92);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: var(--neon-green);
+            text-decoration: none;
+            position: relative;
+            text-shadow: 0 0 10px rgba(208, 255, 19, 0.5);
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { text-shadow: 0 0 10px rgba(200, 241, 53, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(200, 241, 53, 0.8); }
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .nav-links ul {
+            list-style: none;
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links ul a {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            color: var(--muted);
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        .nav-links ul a:hover,
+        .nav-links ul a.active {
+            color: var(--neon-green);
+        }
+
+        /* Language Switcher */
+        .lang-switch {
+            display: flex;
+            gap: 0.5rem;
+            border-left: 1px solid var(--border);
+            padding-left: 2rem;
+        }
+
+        .lang-btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            padding: 0.3rem 0.8rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 20px;
+        }
+
+        .lang-btn.active {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(200, 241, 53, 0.1);
+        }
+
+        .lang-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 4rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 0;
+            position: relative;
+        }
+
+        .hero-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(200, 241, 53, 0.04);
+            border: 1px solid rgba(200, 241, 53, 0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin: 2rem 0;
+        }
+
+        .stat-item {
+            font-family: 'Space Mono', monospace;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--muted2);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            line-height: 0.95;
+            letter-spacing: -0.02em;
+            margin: 2rem 0;
+            text-transform: uppercase;
+        }
+
+        .hero-title .line1 {
+            display: block;
+            color: var(--text);
+        }
+
+        .hero-title .line2 {
+            display: block;
+            color: var(--accent);
+        }
+
+        .hero-title .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 70px;
+            background-color: var(--accent);
+            margin-left: 10px;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .hero-subtitle {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--muted2);
+            max-width: 600px;
+            margin: 2rem 0;
+        }
+
+        /* Discord Button */
+        .discord-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2.5rem;
+            background: rgba(88, 101, 242, 0.1);
+            border: 1.5px solid #5865F2;
+            border-radius: 30px;
+            color: #5865F2;
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            letter-spacing: 0.15em;
+            transition: all 0.3s;
+            margin-top: 2rem;
+        }
+
+        .discord-btn:hover {
+            background: #5865F2;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(88, 101, 242, 0.3);
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5px;
+            background: var(--border);
+            border: 1.5px solid var(--border);
+            margin: 4rem 0;
+        }
+
+        .skill-card {
+            background: var(--bg);
+            padding: 2rem;
+            transition: all 0.3s;
+            cursor: default;
+        }
+
+        .skill-card:hover {
+            background: var(--surface);
+            transform: translateY(-5px);
+        }
+
+        .skill-icon {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .skill-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .skill-desc {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--muted2);
+        }
+
+        /* Projects Section */
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 4rem 0 2rem;
+            color: var(--accent);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5px;
+            background: var(--border);
+            border: 1.5px solid var(--border);
+        }
+
+        .project-card {
+            background: var(--bg);
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            background: var(--surface);
+            transform: scale(1.02);
+            z-index: 2;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .project-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .project-highlight {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .project-desc {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--muted2);
+            margin-bottom: 1.5rem;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .project-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            padding: 0.3rem 0.8rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            color: var(--muted2);
+        }
+
+        /* Role Badge */
+        .role-badge {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            padding: 0.3rem 1rem;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            color: var(--bg);
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 1rem;
+            font-weight: 700;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+        }
+
+        .footer-links a {
+            color: var(--muted2);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-size: 0.8rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Animations */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s forwards;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 2rem;
+                flex-wrap: wrap;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            
+            .container {
+                padding: 0 2rem;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-stats {
+                flex-wrap: wrap;
+                gap: 1.5rem;
+            }
+            
+            footer {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .footer-links a {
+                margin: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D Canvas Container -->
+    <div id="canvas-container"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="/" class="logo">
+            <img src="logo.png" alt="JojosStudio" style="height: 30px; width: auto; display: inline-block; vertical-align: middle; margin-right: 10px;">
+            JojosStudio
+        </a>
+        <div class="nav-links">
+            <ul>
+                <li><a href="#home" class="active" data-i18n="nav.home">Start</a></li>
+                <li><a href="#projects" data-i18n="nav.projects">Projekte</a></li>
+                <li><a href="#about" data-i18n="nav.about">Über mich</a></li>
+                <li><a href="impressum" data-i18n="nav.legal">Impressum</a></li>
+            </ul>
+            <div class="lang-switch">
+                <button class="lang-btn active" onclick="setLanguage('de')">DE</button>
+                <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-tag fade-up">
+                <i class="fas fa-shield-halved"></i>
+                <span data-i18n="hero.tag">Security First · Fullstack Developer</span>
+            </div>
+
+            <h1 class="hero-title fade-up">
+                <span class="line1" data-i18n="hero.line1">Code. Create.</span>
+                <span class="line2" data-i18n="hero.line2">Secure.<span class="cursor"></span></span>
+            </h1>
+
+            <p class="hero-subtitle fade-up" data-i18n="hero.subtitle">
+                Backend-Entwickler mit Fokus auf Sicherheit. Python, Node.js und alles dazwischen. 
+                Über 160 Projekte realisiert – von Discord Bots bis zu kompletten Server-Infrastrukturen.
+            </p>
+
+            <div class="hero-stats fade-up">
+                <div class="stat-item">
+                    <div class="stat-number">160+</div>
+                    <div class="stat-label" data-i18n="stats.projects">Projekte</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">5+</div>
+                    <div class="stat-label" data-i18n="stats.years">Jahre Erfahrung</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label" data-i18n="stats.security">Security First</div>
+                </div>
+            </div>
+
+            <!-- Discord Button -->
+            <a href="https://discord.com/users/jojosstudio1" class="discord-btn fade-up" target="_blank">
+                <i class="fab fa-discord"></i>
+                <span>jojosstudio1</span>
+            </a>
+        </section>
+
+        <!-- Skills Section -->
+        <div class="skills-grid">
+            <div class="skill-card fade-up">
+                <div class="skill-icon"><i class="fab fa-python"></i></div>
+                <h3 class="skill-title">Python</h3>
+                <p class="skill-desc" data-i18n="skills.python">Backend-Logik, Automatisierung, Security-Tools</p>
+            </div>
+            <div class="skill-card fade-up">
+                <div class="skill-icon"><i class="fab fa-node"></i></div>
+                <h3 class="skill-title">Node.js</h3>
+                <p class="skill-desc" data-i18n="skills.node">Server-Architekturen, Echtzeit-Anwendungen</p>
+            </div>
+            <div class="skill-card fade-up">
+                <div class="skill-icon"><i class="fas fa-code"></i></div>
+                <h3 class="skill-title">HTML/CSS/JS</h3>
+                <p class="skill-desc" data-i18n="skills.frontend">Interaktive UIs, Animationen, 3D-Effekte</p>
+            </div>
+        </div>
+
+        <!-- Projects Section -->
+        <h2 class="section-title fade-up" data-i18n="projects.title">Hauptprojekte</h2>
+        <div id="projects" class="projects-grid">
+            <!-- Blynks (Highlight) -->
+            <div class="project-card fade-up" style="border: 2px solid var(--accent); transform: scale(1.02);">
+                <div class="project-icon"><i class="fas fa-bolt"></i></div>
+                <div class="project-highlight">✨ FEATURE PROJECT</div>
+                <h3 class="project-title">BLYNKS</h3>
+                <div class="role-badge"> Co-Founder</div>
+                <p class="project-desc" data-i18n="projects.blynks">Die neue Art zu chatten – schnell, sicher, stylisch. Vollständig verschlüsselte Kommunikation.</p>
+                <div class="project-tags">
+                    <span class="project-tag">Html</span>
+                    <span class="project-tag">Node.js</span>
+                    <span class="project-tag">WebSocket</span>
+                    <span class="project-tag">E2EE</span>
+                </div>
+            </div>
+
+            <!-- Nordlink -->
+            <div class="project-card fade-up">
+                <div class="project-icon"><i class="fab fa-discord"></i></div>
+                <h3 class="project-title">Nordlink</h3>
+                <p class="project-desc" data-i18n="projects.nordlink">Feature-reicher Discord Bot für Community-Management, Moderation und mehr.</p>
+                <div class="project-tags">
+                    <span class="project-tag">Discord.js</span>
+                    <span class="project-tag">MongoDB</span>
+                    <span class="project-tag">Redis</span>
+                </div>
+            </div>
+
+            <!-- Platix -->
+            <div class="project-card fade-up">
+                <div class="project-icon"><i class="fas fa-server"></i></div>
+                <h3 class="project-title">Platix</h3>
+                <div class="role-badge">CO-OWNER</div>
+                <p class="project-desc" data-i18n="projects.platix">Game Server Hosting – skalierbare und sichere Infrastruktur für Gaming-Communities.</p>
+                <div class="project-tags">
+                    <span class="project-tag">Linux</span>
+                    <span class="project-tag">Docker</span>
+                    <span class="project-tag">Networking</span>
+                </div>
+            </div>
+
+            <!-- Nordteam.space -->
+            <div class="project-card fade-up">
+                <div class="project-icon"><i class="fas fa-globe"></i></div>
+                <h3 class="project-title">Nordteam.space</h3>
+                <p class="project-desc" data-i18n="projects.nordteam">Meine Plattform für Entwicklung, Hosting und Community-Projekte.</p>
+                <div class="project-tags">
+                    <span class="project-tag">Fullstack</span>
+                    <span class="project-tag">DevOps</span>
+                    <span class="project-tag">Security</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <section id="about" class="hero" style="min-height: auto; padding: 4rem 0;">
+            <h2 class="section-title fade-up" data-i18n="about.title">Über mich</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;">
+                <div class="fade-up">
+                    <p style="font-family: 'Space Mono', monospace; color: var(--muted2); line-height: 1.8;" data-i18n="about.text1">
+                        Ich bin Jojo, Fullstack-Entwickler mit Leidenschaft für Sicherheit und sauberen Code. 
+                        Seit über 4 Jahren entwickle ich skalierbare Backend-Lösungen, Discord Bots und sichere Web-Anwendungen.
+                    </p>
+                    <p style="font-family: 'Space Mono', monospace; color: var(--muted2); line-height: 1.8; margin-top: 1.5rem;" data-i18n="about.text2">
+                        Als Co-Owner bei Platix verwalte ich Game-Server-Infrastrukturen und sorge für maximale 
+                        Performance und Sicherheit. Mein Motto: Sicherheit ist kein Feature, sondern eine Grundvoraussetzung.
+                    </p>
+                </div>
+                <div class="fade-up" style="background: var(--surface); border: 1px solid var(--border); padding: 2rem;">
+                    <h3 style="color: var(--accent); margin-bottom: 1.5rem; font-size: 1.2rem;" data-i18n="about.special">Was mich ausmacht:</h3>
+                    <ul style="list-style: none; font-family: 'Space Mono', monospace;">
+                        <li style="margin-bottom: 1rem; color: var(--muted2);"><i class="fas fa-shield" style="color: var(--accent); margin-right: 1rem;"></i> Security-first Mindset</li>
+                        <li style="margin-bottom: 1rem; color: var(--muted2);"><i class="fas fa-code" style="color: var(--accent); margin-right: 1rem;"></i> 160+ erfolgreiche Projekte</li>
+                        <li style="margin-bottom: 1rem; color: var(--muted2);"><i class="fas fa-users" style="color: var(--accent); margin-right: 1rem;"></i> Community-driven Development</li>
+                        <li style="margin-bottom: 1rem; color: var(--muted2);"><i class="fas fa-server" style="color: var(--accent); margin-right: 1rem;"></i> Server-Infrastruktur-Experte</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>© 2026 JojosStudio. <span data-i18n="footer.rights">Alle Rechte vorbehalten.</span></p>
+            <div class="footer-links">
+                <a href="impressum" data-i18n="nav.legal">Impressum</a>
+                <a href="#projects" data-i18n="nav.projects">Projekte</a>
+                <a href="https://discord.com/users/jojosstudio1"><i class="fab fa-discord"></i></a>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Cookie Banner (angepasst) -->
+    <div class="cookie-banner" id="cookieBanner" style="position: fixed; bottom: 20px; left: 20px; right: 20px; max-width: 400px; background: var(--surface); border: 1px solid var(--border); padding: 2rem; z-index: 1000; backdrop-filter: blur(5px); display: none;">
+        <!-- Gleicher Cookie-Banner wie in deinem Original -->
+    </div>
+
+    <!-- Three.js Bibliothek -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        // 3D Hintergrund mit Three.js
+        import * as THREE from 'three';
+
+        // Setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        
+        const container = document.getElementById('canvas-container');
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        // Sterne/Punkte erstellen
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 2000;
+        const posArray = new Float32Array(particlesCount * 3);
+        const colorArray = new Float32Array(particlesCount * 3);
+
+        for(let i = 0; i < particlesCount * 3; i += 3) {
+            // Positionen
+            posArray[i] = (Math.random() - 0.5) * 30;
+            posArray[i+1] = (Math.random() - 0.5) * 30;
+            posArray[i+2] = (Math.random() - 0.5) * 30;
+            
+            // Farben (meist grünlich, manchmal lila)
+            const isGreen = Math.random() > 0.7;
+            colorArray[i] = isGreen ? 0.8 : 0.5;     // R
+            colorArray[i+1] = isGreen ? 1.0 : 0.4;   // G
+            colorArray[i+2] = isGreen ? 0.2 : 1.0;   // B
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.05,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending
+        });
+
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        // Zusätzliche geometrische Formen für mehr Interesse
+        const cubeGeometry = new THREE.IcosahedronGeometry(0.5, 0);
+        const cubeMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0xc8f135,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.15
+        });
+        
+        const cubes = [];
+        for(let i = 0; i < 5; i++) {
+            const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+            cube.position.x = (Math.random() - 0.5) * 15;
+            cube.position.y = (Math.random() - 0.5) * 15;
+            cube.position.z = (Math.random() - 0.5) * 15;
+            cube.rotation.x = Math.random() * Math.PI;
+            cube.rotation.y = Math.random() * Math.PI;
+            scene.add(cube);
+            cubes.push(cube);
+        }
+
+        camera.position.z = 5;
+
+        // Maus-Interaktion
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX / window.innerWidth - 0.5) * 2;
+            mouseY = (event.clientY / window.innerHeight - 0.5) * 2;
+        });
+
+        // Animation
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Partikelrotation
+            particlesMesh.rotation.y += 0.0005;
+            particlesMesh.rotation.x += 0.0002;
+
+            // Würfel-Animation
+            cubes.forEach((cube, index) => {
+                cube.rotation.x += 0.01 * (index + 1);
+                cube.rotation.y += 0.01 * (index + 1);
+            });
+
+            // Sanfte Kamerabewegung basierend auf Maus
+            camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 0.5 - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Resize Handler
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Floating Dots (wie in deinem Original, aber als Fallback)
+        function createFloatingDots() {
+            const container = document.getElementById('dots-container');
+            if(!container) return;
+            
+            const dotCount = 30;
+            for (let i = 0; i < dotCount; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'floating-dot';
+                
+                const x = Math.random() * 100;
+                const delay = Math.random() * 20;
+                const duration = 15 + Math.random() * 10;
+                
+                dot.style.left = `${x}%`;
+                dot.style.bottom = `${-5}%`;
+                dot.style.animationDelay = `${delay}s`;
+                dot.style.animationDuration = `${duration}s`;
+                
+                container.appendChild(dot);
+            }
+        }
+        createFloatingDots();
+    </script>
+
+    <script>
+        // Einfaches i18n System
+        const translations = {
+            de: {
+                'nav.home': 'Start',
+                'nav.projects': 'Projekte',
+                'nav.about': 'Über mich',
+                'nav.legal': 'Impressum',
+                'hero.tag': 'Security First · Fullstack Developer',
+                'hero.line1': 'Code. Create.',
+                'hero.line2': 'Secure.',
+                'hero.subtitle': 'Backend-Entwickler mit Fokus auf Sicherheit. Python, Node.js und alles dazwischen. Über 160 Projekte realisiert – von Discord Bots bis zu kompletten Server-Infrastrukturen.',
+                'stats.projects': 'Projekte',
+                'stats.years': 'Jahre Erfahrung',
+                'stats.security': 'Security First',
+                'skills.python': 'Backend-Logik, Automatisierung, Security-Tools',
+                'skills.node': 'Server-Architekturen, Echtzeit-Anwendungen',
+                'skills.frontend': 'Interaktive UIs, Animationen, 3D-Effekte',
+                'projects.title': 'Hauptprojekte',
+                'projects.blynks': 'Die neue Art zu chatten – schnell, sicher, stylisch. Vollständig verschlüsselte Kommunikation.',
+                'projects.nordlink': 'Feature-reicher Discord Bot für Community-Management, Moderation und mehr.',
+                'projects.platix': 'Game Server Hosting – skalierbare und sichere Infrastruktur für Gaming-Communities.',
+                'projects.nordteam': 'Meine Plattform für Entwicklung, Hosting und Community-Projekte.',
+                'about.title': 'Über mich',
+                'about.text1': 'Ich bin Jojo, Fullstack-Entwickler mit Leidenschaft für Sicherheit und sauberen Code. Seit über 4 Jahren entwickle ich skalierbare Backend-Lösungen, Discord Bots und sichere Web-Anwendungen.',
+                'about.text2': 'Als Co-Owner bei Platix verwalte ich Game-Server-Infrastrukturen und sorge für maximale Performance und Sicherheit. Mein Motto: Sicherheit ist kein Feature, sondern eine Grundvoraussetzung.',
+                'about.special': 'Was mich ausmacht:',
+                'footer.rights': 'Alle Rechte vorbehalten.'
+            },
+            en: {
+                'nav.home': 'Home',
+                'nav.projects': 'Projects',
+                'nav.about': 'About',
+                'nav.legal': 'Legal',
+                'hero.tag': 'Security First · Fullstack Developer',
+                'hero.line1': 'Code. Create.',
+                'hero.line2': 'Secure.',
+                'hero.subtitle': 'Backend developer with a focus on security. Python, Node.js and everything in between. Over 160 projects completed – from Discord bots to complete server infrastructures.',
+                'stats.projects': 'Projects',
+                'stats.years': 'Years Experience',
+                'stats.security': 'Security First',
+                'skills.python': 'Backend logic, automation, security tools',
+                'skills.node': 'Server architectures, real-time applications',
+                'skills.frontend': 'Interactive UIs, animations, 3D effects',
+                'projects.title': 'Main Projects',
+                'projects.blynks': 'The new way to chat – fast, secure, stylish. Fully encrypted communication.',
+                'projects.nordlink': 'Feature-rich Discord bot for community management, moderation and more.',
+                'projects.platix': 'Game server hosting – scalable and secure infrastructure for gaming communities.',
+                'projects.nordteam': 'My platform for development, hosting and community projects.',
+                'about.title': 'About me',
+                'about.text1': 'I\'m Jojo, fullstack developer passionate about security and clean code. For over 4 years I\'ve been developing scalable backend solutions, Discord bots and secure web applications.',
+                'about.text2': 'As co-owner at Platix I manage game server infrastructures and ensure maximum performance and security. My motto: Security is not a feature, it\'s a prerequisite.',
+                'about.special': 'What sets me apart:',
+                'footer.rights': 'All rights reserved.'
+            }
+        };
+
+        function setLanguage(lang) {
+            // Update buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update all translatable elements
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = translations[lang][key];
+                    } else {
+                        element.innerHTML = translations[lang][key];
+                    }
+                }
+            });
+            
+            // Store preference
+            localStorage.setItem('preferred-language', lang);
+        }
+
+        // Load preferred language on page load
+        window.addEventListener('load', () => {
+            const preferred = localStorage.getItem('preferred-language') || 'de';
+            setLanguage(preferred);
+            
+            // Trigger click on correct button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.textContent.toLowerCase().includes(preferred)) {
+                    btn.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

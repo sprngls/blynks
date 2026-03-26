@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>BLYNKS · Anmelden</title>
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BLYNKS">
+    <meta name="theme-color" content="#080808">
+    <link rel="apple-touch-icon" href="/logo.png">
+    <link rel="icon" type="image/png" href="/logo.png">
+    
+    <!-- Fonts - Original BLYNKS Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #080808;
+            --surface: #111111;
+            --border: #1e1e1e;
+            --accent: #c8f135;
+            --text: #f0f0f0;
+            --muted: #555;
+            --muted2: #888;
+            --neon-green: #d0ff13;
+            --error: #ff4d4d;
+            --error-bg: rgba(255, 77, 77, 0.1);
+            --success: #c8f135;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            height: 100%;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Syne', sans-serif;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(200, 241, 53, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(200, 241, 53, 0.03) 0%, transparent 40%);
+            padding: 1rem;
+        }
+
+        /* Floating Dots - Original BLYNKS Effekt */
+        .floating-objects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .floating-dot {
+            position: absolute;
+            width: clamp(2px, 1vw, 4px);
+            height: clamp(2px, 1vw, 4px);
+            background-color: var(--accent);
+            border-radius: 50%;
+            opacity: 0.4;
+            filter: blur(1px);
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
+        }
+
+        /* Hauptwrapper */
+        .main-wrapper {
+            width: 100%;
+            max-width: 480px;
+            z-index: 10;
+            position: relative;
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Logo - Original BLYNKS Style */
+        .logo {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(2rem, 8vw, 2.8rem);
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: var(--neon-green);
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(208, 255, 19, 0.5);
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { text-shadow: 0 0 10px rgba(200, 241, 53, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(200, 241, 53, 0.8); }
+        }
+
+        /* Card */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: clamp(1.8rem, 6vw, 2.5rem) clamp(1.5rem, 5vw, 2rem);
+            backdrop-filter: blur(2px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .card:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 2px;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+            position: relative;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            padding: 0.75rem 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+        }
+
+        .tab-btn:hover {
+            color: var(--accent);
+        }
+
+        /* Form Styles */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .input-group label {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted2);
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 0 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .input-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: var(--accent);
+        }
+
+        .input-wrapper:focus-within::after {
+            transform: scaleX(1);
+        }
+
+        .input-wrapper.error {
+            border-color: var(--error);
+        }
+
+        .input-wrapper i {
+            color: var(--muted2);
+            font-size: 1rem;
+            margin-right: 0.75rem;
+            transition: color 0.3s ease;
+        }
+
+        .input-wrapper:focus-within i {
+            color: var(--accent);
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            padding: clamp(0.8rem, 3vw, 1rem) 0;
+            color: var(--text);
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            outline: none;
+        }
+
+        .input-wrapper input::placeholder {
+            color: #333;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.7rem;
+            margin-top: 0.25rem;
+            display: none;
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* Remember Me Checkbox */
+        .remember-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+        }
+
+        .remember-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .remember-checkbox input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
+
+        .remember-checkbox span {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--muted2);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg);
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: clamp(0.8rem, 3vw, 1rem);
+            border: 1.5px solid var(--accent);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+            position: relative;
+            overflow: hidden;
+            border-radius: 30px;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: transparent;
+            color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(200, 241, 53, 0.2);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary.loading {
+            color: transparent;
+        }
+
+        .btn-primary.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 2px solid var(--bg);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Popup */
+        .popup-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 1rem;
+        }
+
+        .popup {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            max-width: 380px;
+            width: 100%;
+            pointer-events: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 0 1px rgba(200, 241, 53, 0.2);
+            animation: popupSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .popup::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .popup:hover::after {
+            transform: scaleX(1);
+        }
+
+        .popup.error::after {
+            background: var(--error);
+        }
+
+        .popup.success::after {
+            background: var(--success);
+        }
+
+        .popup-content {
+            padding: clamp(1.5rem, 5vw, 2rem);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .popup-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .popup-icon {
+            width: clamp(40px, 10vw, 48px);
+            height: clamp(40px, 10vw, 48px);
+            border-radius: 50%;
+            background: rgba(200, 241, 53, 0.04);
+            border: 1px solid rgba(200, 241, 53, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            flex-shrink: 0;
+        }
+
+        .popup.error .popup-icon {
+            color: var(--error);
+            border-color: rgba(255, 77, 77, 0.3);
+        }
+
+        .popup-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .popup.error .popup-title {
+            color: var(--error);
+        }
+
+        .popup-message {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(0.75rem, 2.5vw, 0.85rem);
+            color: var(--muted2);
+            line-height: 1.6;
+        }
+
+        .popup-buttons {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .popup-btn {
+            flex: 1;
+            padding: 0.75rem;
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(0.65rem, 2vw, 0.75rem);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+        }
+
+        .popup-btn:hover {
+            border-color: var(--accent);
+            background: rgba(200, 241, 53, 0.02);
+        }
+
+        .popup-btn.primary {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+        }
+
+        .popup-btn.primary:hover {
+            background: #b3d92e;
+            transform: translateY(-2px);
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+        }
+
+        .footer-note a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-note a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes popupSlide {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 1.5rem; }
+            .tabs { gap: 0; }
+            .tab-btn { font-size: 0.75rem; padding: 0.6rem 0.2rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-objects" id="dotsContainer"></div>
+
+    <div class="popup-container" id="popupContainer" style="display: none;">
+        <div class="popup" id="popup">
+            <div class="popup-content">
+                <div class="popup-header">
+                    <div class="popup-icon" id="popupIcon"><i class="fas fa-check-circle"></i></div>
+                    <div class="popup-title" id="popupTitle">Erfolg</div>
+                </div>
+                <div class="popup-message" id="popupMessage"></div>
+                <div class="popup-buttons">
+                    <button class="popup-btn primary" id="popupConfirm">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="logo">BL<span>Y</span>NKS</div>
+
+        <div class="card">
+            <div class="tabs">
+                <button class="tab-btn active" id="tabLogin" onclick="switchTab('login')">Anmelden</button>
+                <button class="tab-btn" id="tabRegister" onclick="switchTab('register')">Registrieren</button>
+            </div>
+
+            <!-- LOGIN PANEL -->
+            <div id="loginPanel">
+                <form class="login-form" id="loginForm">
+                    <div class="input-group">
+                        <label>Benutzername oder E-Mail</label>
+                        <div class="input-wrapper" id="loginUsernameWrapper">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="loginUsername" placeholder="max_mustermann" autocomplete="username">
+                        </div>
+                        <div class="error-message" id="loginUsernameError"></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Passwort</label>
+                        <div class="input-wrapper" id="loginPasswordWrapper">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+                            <i class="fas fa-eye" id="togglePassword" style="cursor: pointer; margin-left: auto;"></i>
+                        </div>
+                        <div class="error-message" id="loginPasswordError"></div>
+                    </div>
+                    
+                    <div class="remember-row">
+                        <label class="remember-checkbox">
+                            <input type="checkbox" id="rememberMe" checked>
+                            <span>Angemeldet bleiben</span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary" id="loginBtn">Anmelden</button>
+                </form>
+            </div>
+
+            <!-- REGISTER PANEL (einfach) -->
+            <div id="registerPanel" style="display: none;">
+                <form class="login-form" id="registerForm">
+                    <div class="input-group">
+                        <label>Benutzername</label>
+                        <div class="input-wrapper" id="regUsernameWrapper">
+                            <i class="fas fa-at"></i>
+                            <input type="text" id="regUsername" placeholder="max_mustermann" required>
+                        </div>
+                        <div class="error-message" id="regUsernameError"></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>E-Mail (optional)</label>
+                        <div class="input-wrapper" id="regEmailWrapper">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="regEmail" placeholder="max@example.com">
+                        </div>
+                        <div class="error-message" id="regEmailError"></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Passwort</label>
+                        <div class="input-wrapper" id="regPasswordWrapper">
+                            <i class="fas fa-key"></i>
+                            <input type="password" id="regPassword" placeholder="mindestens 8 Zeichen" required>
+                            <i class="fas fa-eye" id="toggleRegPassword" style="cursor: pointer; margin-left: auto;"></i>
+                        </div>
+                        <div class="error-message" id="regPasswordError"></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Passwort bestätigen</label>
+                        <div class="input-wrapper" id="regConfirmWrapper">
+                            <i class="fas fa-check-circle"></i>
+                            <input type="password" id="regConfirm" placeholder="Passwort wiederholen" required>
+                        </div>
+                        <div class="error-message" id="regConfirmError"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary" id="registerBtn">Registrieren</button>
+                </form>
+            </div>
+
+            <div class="footer-note">
+                <span id="footerText">Noch kein Konto? </span>
+                <a href="#" id="footerLink" onclick="switchTab('register'); return false;">Jetzt registrieren</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/pwa.js"></script>
+    <script>
+        // Floating Dots
+        function createFloatingDots() {
+            const container = document.getElementById('dotsContainer');
+            if (!container) return;
+            while (container.firstChild) container.removeChild(container.firstChild);
+            
+            const isMobile = window.innerWidth <= 768;
+            const dotCount = isMobile ? 25 : 40;
+            
+            for (let i = 0; i < dotCount; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'floating-dot';
+                dot.style.left = `${Math.random() * 100}%`;
+                dot.style.bottom = `${-5}%`;
+                dot.style.animationDelay = `${Math.random() * 20}s`;
+                dot.style.animationDuration = `${15 + Math.random() * 10}s`;
+                const size = isMobile ? Math.random() * 2 + 1 : Math.random() * 3 + 1;
+                dot.style.width = `${size}px`;
+                dot.style.height = `${size}px`;
+                container.appendChild(dot);
+            }
+        }
+
+        // Popup
+        function showPopup(type, title, message, callback) {
+            const container = document.getElementById('popupContainer');
+            const popup = document.getElementById('popup');
+            const icon = document.getElementById('popupIcon');
+            const titleEl = document.getElementById('popupTitle');
+            const messageEl = document.getElementById('popupMessage');
+            const confirmBtn = document.getElementById('popupConfirm');
+            
+            popup.className = 'popup';
+            popup.classList.add(type);
+            
+            if (type === 'error') {
+                icon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+                titleEl.textContent = title || 'Fehler';
+            } else if (type === 'success') {
+                icon.innerHTML = '<i class="fas fa-check-circle"></i>';
+                titleEl.textContent = title || 'Erfolg';
+            } else {
+                icon.innerHTML = '<i class="fas fa-info-circle"></i>';
+                titleEl.textContent = title || 'Hinweis';
+            }
+            
+            messageEl.textContent = message;
+            
+            confirmBtn.onclick = function() {
+                container.style.display = 'none';
+                if (callback) callback();
+            };
+            
+            container.style.display = 'flex';
+        }
+
+        function hidePopup() {
+            document.getElementById('popupContainer').style.display = 'none';
+        }
+
+        // Tabs wechseln
+        function switchTab(tab) {
+            const loginPanel = document.getElementById('loginPanel');
+            const registerPanel = document.getElementById('registerPanel');
+            const tabLogin = document.getElementById('tabLogin');
+            const tabRegister = document.getElementById('tabRegister');
+            const footerText = document.getElementById('footerText');
+            const footerLink = document.getElementById('footerLink');
+
+            if (tab === 'login') {
+                loginPanel.style.display = 'block';
+                registerPanel.style.display = 'none';
+                tabLogin.classList.add('active');
+                tabRegister.classList.remove('active');
+                footerText.textContent = 'Noch kein Konto? ';
+                footerLink.textContent = 'Jetzt registrieren';
+                footerLink.onclick = () => switchTab('register');
+            } else {
+                loginPanel.style.display = 'none';
+                registerPanel.style.display = 'block';
+                tabRegister.classList.add('active');
+                tabLogin.classList.remove('active');
+                footerText.textContent = 'Bereits Mitglied? ';
+                footerLink.textContent = 'Jetzt anmelden';
+                footerLink.onclick = () => switchTab('login');
+            }
+        }
+
+        // Passwort anzeigen/verstecken
+        document.getElementById('togglePassword')?.addEventListener('click', function() {
+            const input = document.getElementById('loginPassword');
+            const type = input.type === 'password' ? 'text' : 'password';
+            input.type = type;
+            this.classList.toggle('fa-eye-slash');
+        });
+        
+        document.getElementById('toggleRegPassword')?.addEventListener('click', function() {
+            const input = document.getElementById('regPassword');
+            const type = input.type === 'password' ? 'text' : 'password';
+            input.type = type;
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        // Login Form
+        document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            const btn = document.getElementById('loginBtn');
+            
+            if (!username) {
+                showPopup('error', 'Fehler', 'Bitte gib deinen Benutzernamen ein');
+                return;
+            }
+            if (!password) {
+                showPopup('error', 'Fehler', 'Bitte gib dein Passwort ein');
+                return;
+            }
+            
+            if (rememberMe) {
+                document.cookie = "blynks.remember=1; max-age=2592000; path=/; SameSite=Lax";
+            }
+            
+            btn.classList.add('loading');
+            btn.disabled = true;
+            
+            await window.auth.login(username, password);
+            
+            btn.classList.remove('loading');
+            btn.disabled = false;
+        });
+
+        // Register Form
+        document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('regUsername').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const confirm = document.getElementById('regConfirm').value;
+            const btn = document.getElementById('registerBtn');
+            
+            if (!username) {
+                showPopup('error', 'Fehler', 'Bitte gib einen Benutzernamen ein');
+                return;
+            }
+            if (username.length < 3) {
+                showPopup('error', 'Fehler', 'Benutzername muss mindestens 3 Zeichen lang sein');
+                return;
+            }
+            if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                showPopup('error', 'Fehler', 'Benutzername darf nur Buchstaben, Zahlen und _ enthalten');
+                return;
+            }
+            if (password.length < 8) {
+                showPopup('error', 'Fehler', 'Passwort muss mindestens 8 Zeichen lang sein');
+                return;
+            }
+            if (password !== confirm) {
+                showPopup('error', 'Fehler', 'Die Passwörter stimmen nicht überein');
+                return;
+            }
+            if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showPopup('error', 'Fehler', 'Ungültige E-Mail-Adresse');
+                return;
+            }
+            
+            btn.classList.add('loading');
+            btn.disabled = true;
+            
+            const result = await window.auth.register(username, email, password);
+            
+            btn.classList.remove('loading');
+            btn.disabled = false;
+        });
+
+        // Initialisierung
+        window.addEventListener('load', () => {
+            createFloatingDots();
+            window.showPopup = showPopup;
+            
+            // Prüfe ob "Angemeldet bleiben" aktiv war
+            if (document.cookie.includes('blynks.remember=1')) {
+                document.getElementById('rememberMe').checked = true;
+            }
+        });
+        
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(createFloatingDots, 200);
+        });
+    </script>
+</body>
+</html>

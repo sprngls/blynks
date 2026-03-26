@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impressum • BLYNKS</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        *, *::before, *::after { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        :root {
+            --bg: #080808;
+            --surface: #111111;
+            --border: #1e1e1e;
+            --accent: #c8f135;
+            --accent2: #7b61ff;
+            --text: #f0f0f0;
+            --muted: #555;
+            --muted2: #888;
+            --neon-green: #d0ff13;
+        }
+
+        html { 
+            scroll-behavior: smooth; 
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Syne', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ── Logo / Nav ── */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 4rem;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: rgba(8,8,8,0.92);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            color: var(--neon-green);
+            text-decoration: none;
+            position: relative;
+            text-shadow: 0 0 10px rgba(208, 255, 19, 0.5);
+            animation: pulse 3s infinite;
+        }
+
+        .logo span { 
+            color: var(--neon-green); 
+        }
+
+        @keyframes pulse {
+            0%, 100% { text-shadow: 0 0 10px rgba(200, 241, 53, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(200, 241, 53, 0.8); }
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        nav ul a {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            color: var(--muted);
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        nav ul a:hover,
+        nav ul a.active { 
+            color: var(--neon-green); 
+        }
+
+        /* ── Hero ── */
+        .hero {
+            padding: 6rem 4rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .hero-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hero-tag::before {
+            content: '';
+            display: block;
+            width: 2rem;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 800;
+            line-height: 0.95;
+            letter-spacing: -0.02em;
+            margin-bottom: 2.5rem;
+        }
+
+    @media (max-width: 480px) {
+     h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 700;
+            line-height: 0.95;
+            letter-spacing: -0.02em;
+            margin-bottom: 2.5rem;
+        }
+}
+
+        h1 em { 
+            font-style: normal; 
+            color: var(--accent); 
+        }
+
+        .hero-sub {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--muted2);
+            line-height: 1.8;
+            max-width: 600px;
+            letter-spacing: 0.02em;
+        }
+
+        /* ── Divider ── */
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0 4rem;
+        }
+
+        /* ── Main Content ── */
+        .main-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 4rem 6rem;
+        }
+
+        .section-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .section-label:not(.no-line)::before {
+            content: '';
+            display: block;
+            width: 2rem;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        /* ── Content Card ── */
+        .content-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 3.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.4s;
+        }
+
+        .content-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .content-card:hover::after { 
+            transform: scaleX(1); 
+        }
+
+        /* ── Information Section ── */
+        .info-section {
+            margin-bottom: 3.5rem;
+        }
+
+        .info-section:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .info-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-icon-large {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(200, 241, 53, 0.04);
+            border: 1px solid rgba(200, 241, 53, 0.2);
+            border-radius: 50%;
+            font-size: 1.4rem;
+            color: var(--accent);
+        }
+
+        .info-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            color: var(--text);
+        }
+
+        /* ── Info Grid ── */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5px;
+            background: var(--border);
+            border: 1.5px solid var(--border);
+        }
+
+        .info-item {
+            background: var(--bg);
+            padding: 2.5rem;
+            transition: background 0.4s;
+            cursor: default;
+        }
+
+        .info-item:hover {
+            background: #0d0d0d;
+        }
+
+        .info-heading {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .info-heading i {
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
+        .info-content {
+            color: var(--muted2);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        /* ── Contact Items ── */
+        .contact-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5px;
+            background: var(--border);
+            border: 1.5px solid var(--border);
+        }
+
+        .contact-item {
+            background: var(--bg);
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: background 0.4s;
+        }
+
+        .contact-item:hover {
+            background: #0d0d0d;
+        }
+
+        .contact-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(200, 241, 53, 0.04);
+            border: 1px solid rgba(200, 241, 53, 0.2);
+            color: var(--accent);
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .contact-content {
+            flex: 1;
+        }
+
+        .contact-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 0.3rem;
+        }
+
+        .contact-value {
+            color: var(--text);
+            font-size: 1.1rem;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        /* ── Legal Section ── */
+        .legal-content {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 2.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--muted2);
+            line-height: 1.8;
+        }
+
+        .legal-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .legal-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .legal-content strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* ── Back Link ── */
+        .back-link-wrapper {
+            margin-top: 3.5rem;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            text-decoration: none;
+            text-transform: uppercase;
+            padding: 1rem 2rem;
+            border: 1px solid rgba(200, 241, 53, 0.2);
+            background: rgba(200, 241, 53, 0.02);
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            border-color: var(--accent);
+            background: rgba(200, 241, 53, 0.04);
+            transform: translateY(-2px);
+        }
+
+        .back-link i {
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+
+        .back-link:hover i {
+            transform: translateX(-5px);
+        }
+
+        /* ── Values Strip ── */
+        .values-strip { 
+            border-top: 1px solid var(--border); 
+            border-bottom: 1px solid var(--border); 
+            padding: 2rem 0; 
+            overflow: hidden; 
+            position: relative; 
+            margin-top: 4rem;
+        }
+
+        .values-track {
+            display: flex;
+            gap: 4rem;
+            animation: marquee 20s linear infinite;
+            white-space: nowrap;
+            width: max-content;
+        }
+
+        .values-strip:hover .values-track { 
+            animation-play-state: paused; 
+        }
+
+        @keyframes marquee { 
+            from { transform: translateX(0); } 
+            to { transform: translateX(-50%); } 
+        }
+
+        .values-item {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            color: var(--muted);
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .values-item::after {
+            content: '✦';
+            color: var(--accent);
+            font-size: 0.5rem;
+        }
+
+        /* ── Footer ── */
+        footer {
+            padding: 3rem 4rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        footer p {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+        }
+
+        footer a {
+            color: var(--muted2);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer a:hover { 
+            color: var(--accent); 
+        }
+
+        /* ── Fade in animations ── */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(24px);
+            animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeUp { 
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            } 
+        }
+
+        .hero > * {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .hero > *:nth-child(1) { animation-delay: 0.05s; }
+        .hero > *:nth-child(2) { animation-delay: 0.15s; }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .hero { padding: 4rem 2rem 3rem; }
+            .main-content { padding: 3rem 2rem; }
+            .content-card { padding: 2rem; }
+            .divider { margin: 0 2rem; }
+            footer { padding: 2rem; flex-direction: column; gap: 1rem; text-align: center; }
+            nav { padding: 1.5rem 2rem; }
+            nav ul { gap: 1.5rem; }
+            .info-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 480px) {
+            .contact-item { flex-direction: column; align-items: flex-start; text-align: left; }
+            .contact-icon { margin-bottom: 0.5rem; }
+            .info-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+        }
+
+        /* ── Cursor ── */
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 40px;
+            background-color: var(--accent);
+            margin-left: 5px;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+        
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a class="logo" href="#">BL<span>Y</span>NKS</a>
+    <ul>
+        <li><a href="/">Start</a></li>
+        <li><a href="team">Team</a></li>
+        <li><a href="impressum.html" class="active">Impressum</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+    <div class="hero-tag">Rechtliche Informationen</div>
+    <h1>Impressum<span class="cursor"></span></h1>
+</section>
+
+<div class="divider"></div>
+
+<main class="main-content">
+    
+    <!-- Content Card -->
+    <div class="content-card fade-up">
+        
+        <!-- Betreiber Section -->
+        <div class="info-section">
+            <div class="info-header">
+                <div class="info-icon-large">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <h2 class="info-title">Betreiber</h2>
+            </div>
+            
+            <div class="info-grid">
+                <div class="info-item">
+                    <h3 class="info-heading">
+                        <i class="fas fa-building"></i>
+                        
+                    </h3>
+                    <div class="info-content">
+                        Luis Youssef Schulze<br>
+                        Ebereschenweg 8<br>
+                        18198 Stäbelow<br>
+                        Deutschland
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Section -->
+        <div class="info-section">
+            <div class="info-header">
+                <div class="info-icon-large">
+                    <i class="fas fa-address-card"></i>
+                </div>
+                <h2 class="info-title">Kontakt</h2>
+            </div>
+            
+            <div class="contact-items">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="contact-content">
+                        <div class="contact-label">Namen</div>
+                        <div class="contact-value">Luis Youssef Schulze</div>
+                        <div class="contact-value">Leon Jürgen Matyba</div>
+                        <div class="contact-value">Julien Joel Sperling</div>
+                    </div>
+                </div>
+                
+                
+                
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-content">
+                        <div class="contact-label">E-Mail</div>
+                        <div class="contact-value" id="email-value">kontakt@blynks.de</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Back Button -->
+        <div class="back-link-wrapper">
+            <a href="/" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Zurück zur Startseite
+            </a>
+        </div>
+    </div>
+</main>
+
+<!-- Scrolling values -->
+<div class="values-strip">
+    <div class="values-track">
+        <span class="values-item">Schnell</span>
+        <span class="values-item">Sicher</span>
+        <span class="values-item">Open Source</span>
+        <span class="values-item">Made in Germany</span>
+        <span class="values-item">Datenschutz zuerst</span>
+        <span class="values-item">Community-driven</span>
+        <span class="values-item">Schnell</span>
+        <span class="values-item">Sicher</span>
+        <span class="values-item">Open Source</span>
+        <span class="values-item">Made in Germany</span>
+        <span class="values-item">Datenschutz zuerst</span>
+        <span class="values-item">Community-driven</span>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 BLYNKS. Alle Rechte vorbehalten.</p>
+    <p><a href="impressum.html">Impressum</a></p>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // E-Mail-Kopier-Funktion
+        const emailValue = document.getElementById('email-value');
+        if (emailValue) {
+            emailValue.style.cursor = 'pointer';
+            emailValue.title = 'Klicken zum Kopieren';
+            
+            emailValue.addEventListener('click', function() {
+                const email = this.textContent.trim();
+                navigator.clipboard.writeText(email).then(() => {
+                    const originalText = this.textContent;
+                    this.textContent = 'E-Mail kopiert! ✓';
+                    this.style.color = 'var(--accent)';
+                    
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        this.style.color = '';
+                    }, 2000);
+                });
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

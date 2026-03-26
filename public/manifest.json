@@ -1,0 +1,42 @@
+{
+  "name": "BLYNKS Chat",
+  "short_name": "BLYNKS",
+  "description": "Blynks Chat",
+  "start_url": "/dashboard.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#080808",
+  "background_color": "#080808",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot.png",
+      "sizes": "1280x720",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["social", "communication"],
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Neuer Chat",
+      "short_name": "Chat",
+      "description": "Starte einen neuen Chat",
+      "url": "/dashboard.html",
+      "icons": [{ "src": "/logo.png", "sizes": "96x96" }]
+    }
+  ]
+}
