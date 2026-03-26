@@ -1,5 +1,5 @@
 const domains = {
-    1045: {
+    3000: {
         name: 'blynks.de',
         brand: 'BLYNKS',
         color: '\x1b[36m',
